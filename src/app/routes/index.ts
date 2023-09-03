@@ -1,13 +1,13 @@
 import express from 'express';
-import { BookRoutes } from '../modules/book/book.service';
+import { AuthRoutes } from '../modules/auth/auth.route';
 
 const router = express.Router();
 
 const moduleRoutes = [
   // ... routes
   {
-    path: '/book',
-    route: BookRoutes,
+    path: '/auth',
+    route: AuthRoutes,
   },
 ];
 
