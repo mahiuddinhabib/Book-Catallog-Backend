@@ -19,27 +19,26 @@ const createCategory: RequestHandler = catchAsync(
   }
 );
 
-/* 
-const getAllCategory = catchAsync(async (req: Request, res: Response) => {
-  const result = await CategoryService.getAllCategory();
-
-  sendResponse<Category[]>(res, {
-    success: true,
-    statusCode: httpStatus.OK,
-    message: 'Category retrieved successfully',
-    data: result,
-  });
+const getAllCategories = catchAsync(async (req: Request, res: Response) => {
+    const result = await CategoryService.getAllCategories();
+    
+    sendResponse<Category[]>(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Categories fetched successfully',
+        data: result,
+    });
 });
 const getSingleCategory = catchAsync(async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const result = await CategoryService.getSingleCategory(id);
-
-  sendResponse<Category>(res, {
-    success: true,
-    statusCode: httpStatus.OK,
-    message: 'Category retrieved successfully',
-    data: result,
-  });
+    const { id } = req.params;
+    const result = await CategoryService.getSingleCategory(id);
+    
+    sendResponse<Category>(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Category fetched successfully',
+        data: result,
+    });
 });
 
 const updateCategory = catchAsync(async (req: Request, res: Response) => {
@@ -67,11 +66,11 @@ const deleteCategory = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
- */
+ 
 export const CategoryController = {
 createCategory,
-//   getAllCategory,
-//   getSingleCategory,
-//   updateCategory,
-//   deleteCategory,
+  getAllCategories,
+  getSingleCategory,
+  updateCategory,
+  deleteCategory,
 };

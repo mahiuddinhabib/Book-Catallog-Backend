@@ -12,10 +12,10 @@ router.post(
   validateRequest(CategoryValidation.createCategoryZodSchema),
   CategoryController.createCategory
 );
-/* 
-router.get('/', auth(USER_ROLE.ADMIN), CategoryController.getAllCategories);
+router.get('/', CategoryController.getAllCategories);
 
-router.get('/:id', auth(USER_ROLE.ADMIN), CategoryController.getSingleCategory);
+router.get('/:id', CategoryController.getSingleCategory);
+
 
 router.patch(
   '/:id',
@@ -25,5 +25,5 @@ router.patch(
 );
 
 router.delete('/:id', auth(USER_ROLE.ADMIN), CategoryController.deleteCategory);
- */
+
 export const CategoryRoutes = router;
