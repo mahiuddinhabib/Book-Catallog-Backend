@@ -37,15 +37,15 @@ const loginUser = async (
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
   }
 
-  const { id } = isUserExist;
+  const { id, role } = isUserExist;
   const accessToken = jwtHelpers.createToken(
-    { id, mail },
+    { role, userId: id },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string
   );
 
   const refreshToken = jwtHelpers.createToken(
-    { id, mail },
+    { role, userId: id },
     config.jwt.refresh_secret as Secret,
     config.jwt.refresh_expires_in as string
   );
