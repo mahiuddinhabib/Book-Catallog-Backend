@@ -1,16 +1,15 @@
 import { User } from '@prisma/client';
-// import httpStatus from 'http-status';
-// import { Secret } from 'jsonwebtoken';
-// import config from '../../../config';
-// import ApiError from '../../../errors/ApiError';
-// import { jwtHelpers } from '../../../helpers/jwtHelpers';
+import httpStatus from 'http-status';
+import { Secret } from 'jsonwebtoken';
+import config from '../../../config';
+import ApiError from '../../../errors/ApiError';
 import { excludeField } from '../../../helpers/excludeField';
+import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import prisma from '../../../shared/prisma';
-// import {
-//   ILoginUser,
-//   ILoginUserResponse,
-//   IRefreshTokenResponse,
-// } from './auth.interface';
+import {
+  // ILoginUser,
+  ILoginUserResponse,
+} from './auth.interface';
 
 const createUser = async (payload: User): Promise<Partial<User> | null> => {
   const createdUser = await prisma.user.create({
@@ -19,32 +18,34 @@ const createUser = async (payload: User): Promise<Partial<User> | null> => {
   const userWithoutPassword = excludeField(createdUser, ['password']);
   return userWithoutPassword;
 };
-/* 
-const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
-  const { email, password } = payload;
+const loginUser = async (
+  payload: Partial<User>
+): Promise<ILoginUserResponse> => {
+  const { email: mail, password: pass } = payload;
 
-  const isUserExist = await User.isUserExist(email);
+  const isUserExist = await prisma.user.findUnique({
+    where: {
+      email: mail,
+    },
+  });
 
   if (!isUserExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
 
-  if (
-    isUserExist.password &&
-    !(await User.isPasswordMatched(password, isUserExist.password))
-  ) {
+  if (isUserExist.password && !(isUserExist.password === pass)) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
   }
 
-  const { _id } = isUserExist;
+  const { id } = isUserExist;
   const accessToken = jwtHelpers.createToken(
-    { _id, email },
+    { id, mail },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string
   );
 
   const refreshToken = jwtHelpers.createToken(
-    { _id, email },
+    { id, mail },
     config.jwt.refresh_secret as Secret,
     config.jwt.refresh_expires_in as string
   );
@@ -52,10 +53,10 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   return {
     accessToken,
     refreshToken,
-    id: _id,
   };
 };
 
+/* 
 const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   let verifiedToken = null;
   try {
@@ -91,6 +92,6 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
  */
 export const AuthService = {
   createUser,
-  //   loginUser,
+  loginUser,
   //   refreshToken,
 };
