@@ -9,6 +9,8 @@ const router = express.Router();
 
 router.get('/', auth(USER_ROLE.ADMIN, USER_ROLE.CUSTOMER), OrderController.getAllOrders);
 
+router.get('/:id', auth(USER_ROLE.ADMIN, USER_ROLE.CUSTOMER), OrderController.getSingleOrder);
+
 router.post(
   '/create-order',
   validateRequest(OrderValidation.createOrderZodSchema),

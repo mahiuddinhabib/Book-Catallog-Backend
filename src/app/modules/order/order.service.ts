@@ -63,9 +63,9 @@ const getAllOrders = async (
   let orders;
   if (user?.role === USER_ROLE.ADMIN) {
     orders = await prisma.order.findMany({
-        include:{
-            orderedBooks: true
-        }
+      include: {
+        orderedBooks: true,
+      },
     });
   } else {
     orders = await prisma.order.findMany({
@@ -74,15 +74,39 @@ const getAllOrders = async (
           equals: user?.userId,
         },
       },
-      include:{
-        orderedBooks:true
-      }
+      include: {
+        orderedBooks: true,
+      },
     });
   }
   return orders;
 };
 
+const getSingleOrder = async (
+  user: JwtPayload | null,
+  id: string
+): Promise<Order | null> => {
+  const order = await prisma.order.findUnique({
+    where: {
+      id,
+    },
+    include: {
+      orderedBooks: true,
+    },
+  });
+
+  if (
+    user?.role === USER_ROLE.ADMIN ||
+    (user?.role === USER_ROLE.CUSTOMER && user?.userId === order?.userId)
+  ) {
+    return order;
+  } else {
+    throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
+  }
+};
+
 export const OrderService = {
   createOrder,
   getAllOrders,
+  getSingleOrder,
 };
