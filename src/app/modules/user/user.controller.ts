@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
 import { User } from '@prisma/client';
+import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
@@ -8,7 +8,7 @@ import { UserService } from './user.service';
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.getAllUsers();
 
-  sendResponse<User[]>(res, {
+  sendResponse<Partial<User>[]>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'Users retrieved successfully',
@@ -20,7 +20,7 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await UserService.getSingleUser(id);
 
-  sendResponse<User>(res, {
+  sendResponse<Partial<User>>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'User retrieved successfully',
@@ -34,7 +34,7 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
 
   const result = await UserService.updateUser(id, updatedData);
 
-  sendResponse<User>(res, {
+  sendResponse<Partial<User>>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'User updated successfully',
@@ -46,7 +46,7 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await UserService.deleteUser(id);
 
-  sendResponse<User>(res, {
+  sendResponse<Partial<User>>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'User deleted successfully',

@@ -2,33 +2,45 @@
 import { User } from '@prisma/client';
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
+import { excludeField } from '../../../helpers/excludeField';
 import prisma from '../../../shared/prisma';
 
-const getAllUsers = async (): Promise<User[] | []> => {
-  const result = await prisma.user.findMany();
+const getAllUsers = async (): Promise<Partial<User>[] | []> => {
+  const result = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      contactNo: true,
+      address: true,
+      profileImg: true,
+    },
+  });
   return result;
 };
 
-const getSingleUser = async (id: string): Promise<User | null> => {
+const getSingleUser = async (id: string): Promise<Partial<User> | null> => {
   const result = await prisma.user.findUnique({
-    where:{
-        id
-    }
-  })
+    where: {
+      id,
+    },
+  });
   if (!result) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  return result;
+  const resultWithoutPass = excludeField(result, ['password']);
+  return resultWithoutPass;
 };
 
 const updateUser = async (
   id: string,
   payload: Partial<User>
-): Promise<User | null> => {
+): Promise<Partial<User> | null> => {
   const isExist = await prisma.user.findUnique({
-    where:{
-        id
-    }
+    where: {
+      id,
+    },
   });
 
   if (!isExist) {
@@ -36,19 +48,20 @@ const updateUser = async (
   }
 
   const result = await prisma.user.update({
-    where:{
-        id
+    where: {
+      id,
     },
-    data:payload
-  })
-  return result;
+    data: payload,
+  });
+  const resultWithoutPass = excludeField(result, ['password']);
+  return resultWithoutPass;
 };
 
-const deleteUser = async (id: string): Promise<User | null> => {
+const deleteUser = async (id: string): Promise<Partial<User> | null> => {
   const isExist = await prisma.user.findUnique({
-    where:{
-        id
-    }
+    where: {
+      id,
+    },
   });
 
   if (!isExist) {
@@ -56,11 +69,12 @@ const deleteUser = async (id: string): Promise<User | null> => {
   }
 
   const result = await prisma.user.delete({
-    where:{
-        id
-    }
+    where: {
+      id,
+    },
   });
-  return result;
+  const resultWithoutPass = excludeField(result, ['password']);
+  return resultWithoutPass;
 };
 
 export const UserService = {
