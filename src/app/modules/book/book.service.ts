@@ -158,7 +158,6 @@ const getSingleBook = async (id: string): Promise<Book | null> => {
   return result;
 };
 
-/* 
 const updateBook = async (
   id: string,
   payload: Partial<Book>
@@ -200,12 +199,12 @@ const deleteBook = async (id: string): Promise<Book | null> => {
   });
   return result;
 };
- */
+
 export const BookService = {
   createBook,
   getAllBooks,
   getSingleBook,
   getBooksByCategory,
-  //   updateBook,
-  //   deleteBook,
+  updateBook,
+  deleteBook,
 };

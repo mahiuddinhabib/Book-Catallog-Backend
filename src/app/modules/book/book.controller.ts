@@ -1,12 +1,12 @@
-import { Request, RequestHandler, Response } from 'express';
 import { Book } from '@prisma/client';
+import { Request, RequestHandler, Response } from 'express';
 import httpStatus from 'http-status';
-import catchAsync from '../../../shared/catchAsync';
-import sendResponse from '../../../shared/sendResponse';
-import { BookService } from './book.service';
-import pick from '../../../shared/pick';
-import { bookFilterableFields } from './book.constant';
 import { paginationFields } from '../../../constants/pagination';
+import catchAsync from '../../../shared/catchAsync';
+import pick from '../../../shared/pick';
+import sendResponse from '../../../shared/sendResponse';
+import { bookFilterableFields } from './book.constant';
+import { BookService } from './book.service';
 
 const createBook: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
@@ -38,9 +38,9 @@ const getAllBooks = catchAsync(async (req: Request, res: Response) => {
 const getBooksByCategory = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const paginationOptions = pick(req.query, paginationFields);
-  
+
   const result = await BookService.getBooksByCategory(id, paginationOptions);
-  
+
   sendResponse<Book[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -53,7 +53,7 @@ const getBooksByCategory = catchAsync(async (req: Request, res: Response) => {
 const getSingleBook = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await BookService.getSingleBook(id);
-  
+
   sendResponse<Book>(res, {
     success: true,
     statusCode: httpStatus.OK,
@@ -62,7 +62,6 @@ const getSingleBook = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-/* 
 const updateBook = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const updatedData = req.body;
@@ -89,11 +88,11 @@ const deleteBook = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
- */export const BookController = {
+export const BookController = {
   createBook,
   getAllBooks,
   getSingleBook,
-  getBooksByCategory
-//   updateBook,
-//   deleteBook,
+  getBooksByCategory,
+  updateBook,
+  deleteBook,
 };

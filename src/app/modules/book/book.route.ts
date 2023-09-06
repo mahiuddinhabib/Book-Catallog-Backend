@@ -19,15 +19,14 @@ router.get('/:id', BookController.getSingleBook);
 
 router.get('/:id/category', BookController.getBooksByCategory);
 
-/* 
-
 router.patch(
   '/:id',
   auth(USER_ROLE.ADMIN),
   validateRequest(BookValidation.updateBookZodSchema),
   BookController.updateBook
-);
-router.delete('/:id', auth(USER_ROLE.ADMIN), BookController.deleteBook);
-*/
+  );
+
+  router.delete('/:id', auth(USER_ROLE.ADMIN), BookController.deleteBook);
+
 
 export const BookRoutes = router;
