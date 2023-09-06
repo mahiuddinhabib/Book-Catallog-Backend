@@ -7,7 +7,7 @@ import { USER_ROLE } from '../../../enums/user';
 const router = express.Router();
 
 router.post(
-  '/',
+  '/create-category',
   auth(USER_ROLE.ADMIN),
   validateRequest(CategoryValidation.createCategoryZodSchema),
   CategoryController.createCategory
