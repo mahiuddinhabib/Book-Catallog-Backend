@@ -1,14 +1,13 @@
 import express from 'express';
-import validateRequest from '../../middlewares/validateRequest';
-import { OrderValidation } from './order.validate';
 import { USER_ROLE } from '../../../enums/user';
 import auth from '../../middlewares/auth';
+import validateRequest from '../../middlewares/validateRequest';
 import { OrderController } from './order.controller';
-
+import { OrderValidation } from './order.validate';
 
 const router = express.Router();
-// router.get('/', OrderController.getAllFromDB);
-// router.get('/:id', OrderController.getByIdFromDB);
+
+router.get('/', auth(USER_ROLE.ADMIN, USER_ROLE.CUSTOMER), OrderController.getAllOrders);
 
 router.post(
   '/create-order',
