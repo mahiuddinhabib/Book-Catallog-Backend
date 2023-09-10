@@ -6,6 +6,7 @@
 
 User
 - api/v1/auth/signup (POST)
+- api/v1/auth/signin (POST)
 - api/v1/users (GET)
 - api/v1/users/15893736-3ad7-4041-9155-8d67f4bfd406 (Single GET)
 - api/v1/users/15893736-3ad7-4041-9155-8d67f4bfd406 (PATCH)
